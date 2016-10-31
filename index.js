@@ -66,4 +66,11 @@ const table = new Table(
     )
   }
 );
+
+authors.forEach(author => {
+  const o = {};
+  o[author.toString()] = ['x', 'x', 'x', 'x'];
+  table.push(o);
+})
+
 console.log(table.toString());
