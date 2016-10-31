@@ -1,0 +1,14 @@
+{
+  "name": "eb",
+  "version": "1.0.0",
+  "description": "eb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Garner <j@jada.io>",
+  "license": "ISC",
+  "dependencies": {
+    "libxmljs": "^0.18.0"
+  }
+}
