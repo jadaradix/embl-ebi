@@ -1,38 +1,20 @@
 "use strict";
 
-const Author = function Author (foreName, lastName, initials) {
-  this.foreName = foreName;
-  this.lastName = lastName;
-  this.initials = initials;
-};
-
-Author.prototype.toString = function toString () {
-  return `${this.lastName}, ${this.foreName}`;
-};
-
-const Article = function Article (title) {
-  this.title = title;
-  this.authors = [];
-};
-
-Article.prototype.addAuthor = function addAuthor (author) {
-  this.authors.push(author);
-};
-
 // Dependencies
-const fs = require("fs");
-const libxmljs = require("libxmljs");
-const Table = require("cli-table");
+const getXmlDocument = require("./getXmlDocument");
+const getTable = require("./getTable");
 
-// XML -> String
-const xml = fs.readFileSync("./data.xml").toString();
+// Types
+const Article = require("./types/Article");
+const Author = require("./types/Author");
 
-// XML -> DOM
-const doc = libxmljs.parseXml(xml);
+// Containers
+let authors = [];
+let articles = [];
 
 // DOM -> Article objects
-const authors = [];
-const articles = doc.find("//Article").map(domElement => {
+const doc = getXmlDocument("./data.xml");
+articles = doc.find("//Article").map(domElement => {
   const articleTitleElement = domElement.get("ArticleTitle");
   const articleAuthorElements = domElement.find("AuthorList/Author");
   const article = new Article(articleTitleElement.text());
@@ -59,26 +41,5 @@ const articles = doc.find("//Article").map(domElement => {
   return article;
 });
 
-const table = new Table(
-  {
-    head: [""].concat(
-      authors.map(author => author.toString())
-    )
-  }
-);
-
-authors.forEach(columnWiseAuthor => {
-  const o = {};
-  o[columnWiseAuthor.toString()] = authors.map((rowWiseAuthor) => {
-    const articlesByTheseAuthors = articles.filter(article => {
-      return (
-        article.authors.includes(columnWiseAuthor) &&
-        article.authors.includes(rowWiseAuthor)
-      );
-    });
-    return articlesByTheseAuthors.length;
-  });
-  table.push(o);
-})
-
+const table = getTable(authors, articles);
 console.log(table.toString());
