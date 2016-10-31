@@ -1,5 +1,8 @@
 "use strict";
 
+// Configuration
+const ARTICLES_PATH = "./data/articles.xml";
+
 // Dependencies
 const getXmlDocument = require("./getXmlDocument");
 const getTable = require("./getTable");
@@ -12,25 +15,30 @@ const Author = require("./types/Author");
 let authors = [];
 let articles = [];
 
+const getExistingAuthor = function getExistingAuthor (author) {
+  return authors.find(existingAuthor => {
+    return (
+      existingAuthor.foreName === author.foreName &&
+      existingAuthor.lastName === author.lastName &&
+      existingAuthor.initials === author.initials
+    );
+  }) || null;
+};
+
 // DOM -> Article objects
-const doc = getXmlDocument("./data.xml");
+const doc = getXmlDocument(ARTICLES_PATH);
 articles = doc.find("//Article").map(domElement => {
+  const article = new Article();
   const articleTitleElement = domElement.get("ArticleTitle");
   const articleAuthorElements = domElement.find("AuthorList/Author");
-  const article = new Article(articleTitleElement.text());
+  article.setTitle(articleTitleElement.text());
   articleAuthorElements.forEach(articleAuthorElement => {
     const author = new Author(
       articleAuthorElement.get("ForeName").text(),
       articleAuthorElement.get("LastName").text(),
       articleAuthorElement.get("Initials").text()
     );
-    let existingAuthor = authors.find(existingAuthor => {
-      return (
-        existingAuthor.foreName === author.foreName &&
-        existingAuthor.lastName === author.lastName &&
-        existingAuthor.initials === author.initials
-      );
-    });
+    let existingAuthor = getExistingAuthor(author);
     if (existingAuthor) {
       article.addAuthor(existingAuthor);
     } else {
