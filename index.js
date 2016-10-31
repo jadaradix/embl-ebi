@@ -6,6 +6,7 @@ const ARTICLES_PATH = "./data/articles.xml";
 // Dependencies
 const getXmlDocument = require("./getXmlDocument");
 const getTable = require("./getTable");
+const getExistingAuthor = require("./getExistingAuthor");
 
 // Types
 const Article = require("./types/Article");
@@ -14,16 +15,6 @@ const Author = require("./types/Author");
 // Containers
 let authors = [];
 let articles = [];
-
-const getExistingAuthor = function getExistingAuthor (author) {
-  return authors.find(existingAuthor => {
-    return (
-      existingAuthor.foreName === author.foreName &&
-      existingAuthor.lastName === author.lastName &&
-      existingAuthor.initials === author.initials
-    );
-  }) || null;
-};
 
 // DOM -> Article objects
 const doc = getXmlDocument(ARTICLES_PATH);
@@ -38,7 +29,7 @@ articles = doc.find("//Article").map(domElement => {
       articleAuthorElement.get("LastName").text(),
       articleAuthorElement.get("Initials").text()
     );
-    let existingAuthor = getExistingAuthor(author);
+    const existingAuthor = getExistingAuthor(authors, author);
     if (existingAuthor) {
       article.addAuthor(existingAuthor);
     } else {
