@@ -9,6 +9,7 @@
   "author": "James Garner <j@jada.io>",
   "license": "ISC",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "libxmljs": "^0.18.0"
   }
 }

@@ -6,6 +6,10 @@ const Author = function Author (foreName, lastName, initials) {
   this.initials = initials;
 };
 
+Author.prototype.toString = function toString () {
+  return `${this.lastName}, ${this.foreName}`;
+};
+
 const Article = function Article (title) {
   this.title = title;
   this.authors = [];
@@ -54,5 +58,12 @@ const articles = doc.find("//Article").map(domElement => {
   });
   return article;
 });
-console.log(authors);
-console.log(articles);
+
+const table = new Table(
+  {
+    head: [""].concat(
+      authors.map(author => author.toString())
+    )
+  }
+);
+console.log(table.toString());
