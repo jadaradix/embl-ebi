@@ -42,7 +42,7 @@ const articles = doc.find("//Article").map(domElement => {
       articleAuthorElement.get("LastName").text(),
       articleAuthorElement.get("Initials").text()
     );
-    let existingAuthor = authors.find((existingAuthor) => {
+    let existingAuthor = authors.find(existingAuthor => {
       return (
         existingAuthor.foreName === author.foreName &&
         existingAuthor.lastName === author.lastName &&
@@ -67,9 +67,17 @@ const table = new Table(
   }
 );
 
-authors.forEach(author => {
+authors.forEach(columnWiseAuthor => {
   const o = {};
-  o[author.toString()] = ['x', 'x', 'x', 'x'];
+  o[columnWiseAuthor.toString()] = authors.map((rowWiseAuthor) => {
+    const articlesByTheseAuthors = articles.filter(article => {
+      return (
+        article.authors.includes(columnWiseAuthor) &&
+        article.authors.includes(rowWiseAuthor)
+      );
+    });
+    return articlesByTheseAuthors.length;
+  });
   table.push(o);
 })
 
