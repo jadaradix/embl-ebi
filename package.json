@@ -1,7 +1,7 @@
 {
-  "name": "eb",
-  "version": "1.0.0",
-  "description": "eb",
+  "name": "embl-ebi",
+  "version": "1.1.0",
+  "description": "embl-ebi",
   "main": "index.js",
   "scripts": {
     "test": "mocha test --reporter spec",
