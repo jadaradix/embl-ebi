@@ -4,12 +4,17 @@
   "description": "eb",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test --reporter spec",
+    "start": "node index.js"
   },
   "author": "James Garner <j@jada.io>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cli-table": "^0.3.1",
     "libxmljs": "^0.18.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.0"
   }
 }
