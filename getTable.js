@@ -11,16 +11,17 @@ const getTable = function getTable (authors, articles) {
     }
   );
   authors.forEach(columnWiseAuthor => {
-    const o = {};
-    o[columnWiseAuthor.toString()] = authors.map((rowWiseAuthor) => {
-      const articlesByTheseAuthors = articles.filter(article => {
-        return (
-          article.authors.includes(columnWiseAuthor) &&
-          article.authors.includes(rowWiseAuthor)
-        );
-      });
-      return articlesByTheseAuthors.length;
-    });
+    const o = {
+      [columnWiseAuthor.toString()]: authors.map((rowWiseAuthor) => {
+        const articlesByTheseAuthors = articles.filter(article => {
+          return (
+            article.authors.includes(columnWiseAuthor) &&
+            article.authors.includes(rowWiseAuthor)
+          );
+        });
+        return articlesByTheseAuthors.length;
+      })
+    };
     table.push(o);
   });
   return table;
